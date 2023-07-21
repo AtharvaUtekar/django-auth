@@ -34,6 +34,15 @@ class CustomAccountManager(BaseUserManager):
 
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
+    USER = 1
+    VERIFIER = 2
+    AGENCY = 3
+      
+    ROLE_CHOICES = (
+          (USER, 'User'),
+          (VERIFIER, 'Verifier'),
+          (AGENCY, 'Agency'),
+    )
 
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(max_length=150, blank=True)
@@ -42,6 +51,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     about = models.TextField(_('about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     objects = CustomAccountManager()
 
